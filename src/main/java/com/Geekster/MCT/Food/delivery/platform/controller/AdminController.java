@@ -5,7 +5,9 @@ import com.Geekster.MCT.Food.delivery.platform.model.FoodItem;
 import com.Geekster.MCT.Food.delivery.platform.model.Order;
 import com.Geekster.MCT.Food.delivery.platform.service.AdminService;
 import com.Geekster.MCT.Food.delivery.platform.service.FoodItemService;
+import com.Geekster.MCT.Food.delivery.platform.service.OrderService;
 import jakarta.validation.Valid;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ public class AdminController {
     AdminService adminService;
     @Autowired
     FoodItemService foodItemService;
+    @Autowired
+    OrderService orderService;
 
     @PostMapping(value = "/creat-admin")
     public ResponseEntity addAdmin(@Valid @RequestBody Admin admindetails){
@@ -49,12 +53,13 @@ public class AdminController {
         return new ResponseEntity<>("FoodItem is deleted successfully",HttpStatus.ACCEPTED);
     }
     @PutMapping(value = "/update-food-details")
-    public ResponseEntity updatefood(@RequestParam Integer foodId,@Valid @RequestBody Admin admin, @Valid @RequestBody FoodItem foodItem){
-        List<FoodItem> foodItems = admin.getFoodItem();
+    public ResponseEntity updatefood(@RequestParam Integer foodId, @Valid @RequestBody FoodItem foodItem){
+        List<FoodItem> foodItems = adminService.findfoodItems();
         for(FoodItem food : foodItems){
             if(food.getFoodId()==foodId){
                 food.setName(foodItem.getName());
                 food.setDescription(foodItem.getDescription());
+                foodItemService.savefood(food);
                 return new ResponseEntity<>("Food data has been updated",HttpStatus.ACCEPTED);
             }
         }
@@ -62,19 +67,12 @@ public class AdminController {
     }
     @GetMapping(value = "/getOrderbyorderid")
     public ResponseEntity orderget(@RequestParam Integer orderid){
-        List<Admin> admins = adminService.getOrder();
-        for(Admin admin : admins){
-            List<Order> orders = admin.getOrderList();
-            for(Order order : orders){
-                if(order.getOrderId()==orderid){
-                    return new ResponseEntity<>("Order has been found -"+order.getFoodId().getName(),HttpStatus.OK);
-                }
+        List<Order> orderList = orderService.getall();
+        for(Order order : orderList){
+            if(order.getOrderId()==orderid){
+                return new ResponseEntity("order which was given by this order id is -"+order.getFoodId().getName(),HttpStatus.ACCEPTED);
             }
         }
-        return new ResponseEntity<>("the orderid has not been found please enter valid orderid",HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("order with the following order id has not been found ",HttpStatus.NOT_FOUND);
     }
-
-
-
-
 }

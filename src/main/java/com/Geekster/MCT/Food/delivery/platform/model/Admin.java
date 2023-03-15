@@ -27,11 +27,4 @@ public class Admin {
     private String email;
     @Digits(integer = 10,fraction = 0,message = "please eneter the 10 digits number")
     private String phonenumber;
-    @JoinColumn(name = "foodId")
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<FoodItem> foodItem;
-    @JoinColumn(name = "orderId")
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Order>  orderList;
-
 }

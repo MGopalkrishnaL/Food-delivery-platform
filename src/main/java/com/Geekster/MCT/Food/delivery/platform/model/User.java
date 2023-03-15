@@ -1,9 +1,11 @@
 package com.Geekster.MCT.Food.delivery.platform.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -16,10 +18,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int userId;
+    @Length(min = 3,max = 20,message = "User name should contain characters between 3-20 ")
     private String name;
+    @Email(message = "Enter valid email")
     private String email;
-    @JoinColumn(name = "list_of_orders")
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Order> Orderid;
+
 
 }

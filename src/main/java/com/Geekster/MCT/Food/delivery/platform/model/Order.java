@@ -14,7 +14,7 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-    @JoinColumn(name = "food_id")
+    @JoinColumn(name = "foodId")
     @OneToOne
     private FoodItem foodId;
     @ManyToOne(fetch = FetchType.LAZY)

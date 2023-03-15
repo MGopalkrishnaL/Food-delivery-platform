@@ -28,7 +28,11 @@ public class AdminService {
         return foodItemRepo.findById(foodid).get();
     }
 
-    public List<Admin> getOrder() {
+    public List<Admin> getadmins() {
         return adminRepo.findAll();
+    }
+
+    public List<FoodItem> findfoodItems() {
+        return foodItemRepo.findAll();
     }
 }
