@@ -21,28 +21,15 @@ public class UserService {
         return userRepo.findAll();
     }
 
-    public JSONObject login (String username, String password) {
-        JSONObject response = new JSONObject();
-        List<User> user = userRepo.findByName(username);
-        if(user.isEmpty()) {
-            response.put("errorMessage", "username doesn't exist");
-        }else {
-            User userObj = user.get(0);
-            if(password.equals(userObj.getEmail())) {
-                response = create(userObj);
-            }else {
-                response.put("errorMessage" , "password is not valid");
+    public ResponseEntity login(String name ,String password){
+        List<User> userList = userRepo.findAll();
+        for(User user : userList){
+            if(user.getName().equals(name)){
+                if(user.getEmail().equals(password)){
+                    return new ResponseEntity<>("User login successfully",HttpStatus.OK);
+                }
             }
         }
-        return response;
+        return new ResponseEntity<>("please check the user name and email ",HttpStatus.NOT_FOUND);
     }
-    public JSONObject create(User user){
-        JSONObject json = new JSONObject();
-        json.put("userId",user.getUserId());
-        json.put("name",user.getName());
-        json.put("email",user.getEmail());
-        return json;
-    }
-
-
 }

@@ -5,6 +5,7 @@ import com.Geekster.MCT.Food.delivery.platform.service.UserService;
 import jakarta.validation.Valid;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class UserController {
         return userservice.getall();
     }
     @GetMapping(value = "/login")
-    public JSONObject login(String name , String email){
+    public ResponseEntity login(@RequestParam String name ,@RequestParam String email){
         return userservice.login(name,email);
     }
 

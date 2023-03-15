@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface IOrderRepo extends JpaRepository<Order,Integer> {
     @Query(value = "select * from order_tbl where userid_user_id = :userid",nativeQuery = true)
-    public List<Order> findOrderByuserid(int userid);
+    public List<Order> getOrdersList(Integer userid);
+    @Query(value = "select * from order_tbl where userid_user_id = :userid and food_id = :foodid",nativeQuery = true)
+    public List<Order> getOrderList(int userid,int foodid);
 
 }
